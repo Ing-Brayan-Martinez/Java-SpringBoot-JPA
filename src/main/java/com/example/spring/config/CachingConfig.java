@@ -11,6 +11,11 @@ import org.springframework.context.annotation.Configuration;
 @EnableCaching
 @EnableAutoConfiguration
 public class CachingConfig {
+
+    /**
+     * Método para crea la instancia del almacen de la cache.
+     * @return Retorna el almacen de cache
+     */
     @Bean
     public CacheManager cacheManager() {
         return new ConcurrentMapCacheManager("orderCache");

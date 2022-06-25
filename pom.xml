@@ -24,7 +24,7 @@
         <project.resources.sourceEncoding>${encoding}</project.resources.sourceEncoding>
         <jdk.version>17</jdk.version>
         <lombok.version>1.18.20</lombok.version>
-        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <mapstruct.version>1.5.0.Final</mapstruct.version>
     </properties>
 
     <dependencies>

@@ -24,7 +24,7 @@ Este proyecto utiliza un sistema modular de "Skills" ubicado en [.agents/skills/
 
 | Categórica | Tecnología / Librería | Versión / Detalle |
 | :--- | :--- | :--- |
-| **Lenguaje & Runtime** | Java 17 | JDK 17 con `--enable-preview` en compilación y ejecución |
+| **Lenguaje & Runtime** | Java 17 | JDK 17 en compilación y ejecución |
 | **Framework Base** | Spring Boot | `2.5.4` (`spring-boot-starter-parent`) |
 | **Capa Web** | Spring Web / MVC | `spring-boot-starter-web` (Controladores REST y MVC) |
 | **Documentación API** | SpringFox Swagger | `3.0.0` (`springfox-boot-starter`, `springfox-swagger-ui`) |

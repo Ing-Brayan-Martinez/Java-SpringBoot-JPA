@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Controlador REST para el recurso de órdenes.
@@ -73,12 +74,11 @@ public final class OrderController {
      * @return 204 No Content si se eliminó o 404 Not Found si no existe.
      */
     @DeleteMapping("/order/{id}")
-    public ResponseEntity<Void> delete(@PathVariable final Long id) {
-        final boolean deleted = this.orderService.delete(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<Boolean> delete(@PathVariable final UUID id) {
+        return this.orderService.delete(id)
+            .filter((e) -> e == true)
+            .map(ResponseEntity::ok)
+            .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**
@@ -96,7 +96,7 @@ public final class OrderController {
      * @return Respuesta con la orden encontrada o 404 Not Found.
      */
     @GetMapping("/order/{id}")
-    public ResponseEntity<Order> findById(@PathVariable final Long id) {
+    public ResponseEntity<Order> findById(@PathVariable final UUID id) {
         return this.orderService.findOrderById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

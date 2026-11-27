@@ -1,4 +1,4 @@
-package com.example.spring.service.impl;
+package com.example.spring.service;
 
 import com.example.spring.domain.order.Order;
 import com.example.spring.domain.order.CreateOrder;
@@ -59,7 +59,7 @@ public class OrderService {
             entity.setDiscount(dto.discount());
             return entity;
         })
-        .flatMap(orderRepository::save);
+        .flatMap(orderRepository::createOrder);
     }
 
     /**
@@ -85,7 +85,7 @@ public class OrderService {
             origin.setUpdatedAt(LocalDateTime.now());
             return origin;
         })
-        .flatMap(orderRepository::edit);
+        .flatMap(orderRepository::updateOrder);
     }
 
     /**
@@ -93,9 +93,9 @@ public class OrderService {
      * @param id El id de la orden a eliminar
      */
     public Optional<Boolean> delete(UUID id) {
-        return orderRepository.exstsById(id)
+        return orderRepository.existsByOrderId(id)
         .flatMap((exists) -> exists
-            ? Optional.of(id).map((e) -> orderRepository.deleteById(e)).map((e) -> true)
+            ? Optional.of(id).map((e) -> orderRepository.deleteOrderById(e)).map((e) -> true)
             : Optional.of(false));
     }
 

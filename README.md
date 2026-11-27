@@ -1,127 +1,217 @@
-# Java-SpringBoot-JPA
+# Java-SpringBoot-WebFlux
 
-[![Java 17](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.5.4-green.svg)](https://spring.io/projects/spring-boot)
-[![Spring Data JPA](https://img.shields.io/badge/Spring%20Data-JPA-blue.svg)](https://spring.io/projects/spring-data-jpa)
-[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-teal.svg)](https://www.postgresql.org/)
+[![Java](https://img.shields.io/badge/Java-21-orange.svg)](https://www.oracle.com/java/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-green.svg)](https://spring.io/projects/spring-boot)
+[![WebFlux](https://img.shields.io/badge/Spring-WebFlux-blue.svg)](https://docs.spring.io/spring-framework/reference/web/webflux.html)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14%2B-blue.svg)](https://www.postgresql.org/)
 
-Aplicación de ejemplo y plantilla base desarrollada con **Java 17** y **Spring Boot 2.5.4**. Implementa una API REST con **Spring MVC**, una arquitectura en capas y persistencia relacional mediante **Spring Data JPA / Hibernate** sobre **PostgreSQL**.
+API REST de ejemplo construida con **Java**, **Spring WebFlux** y **Project Reactor**. Implementa operaciones CRUD para tareas, productos y órdenes, con persistencia reactiva en PostgreSQL mediante **Spring Data R2DBC** y una arquitectura en capas.
 
 ---
 
 ## 🚀 Características principales
 
-- **API REST:** controlador Spring MVC para consultar órdenes de compra.
-- **Arquitectura en capas:** separación entre controlador, servicio, repositorio y entidad de dominio.
-- **Persistencia JPA:** acceso a PostgreSQL mediante Spring Data JPA e Hibernate.
-- **Caché:** configuración de Spring Cache con un administrador de caché en memoria.
-- **Documentación API:** interfaz Swagger UI proporcionada por SpringFox.
-- **Datos de ejemplo:** `import.sql` contiene registros de órdenes para inicializar la aplicación.
-- **Calidad y documentación:** configuración de Checkstyle y generación de Javadoc mediante Maven.
-- **Contenedorización:** incluye un Dockerfile y un workflow de GitHub Actions para la imagen.
+- **API reactiva:** endpoints no bloqueantes con `Mono<T>` y `Flux<T>`.
+- **Persistencia PostgreSQL:** acceso reactivo a datos con Spring Data R2DBC.
+- **Arquitectura en capas:** controladores, servicios, repositorios y modelos de dominio.
+- **CRUD:** operaciones de creación, consulta, actualización y eliminación para tareas, productos y órdenes.
+- **JSON:** los nombres de propiedades de los modelos Java se exponen en `camelCase`.
+- **Autenticación por API key:** las rutas `/api/v1/*` requieren el encabezado `X-API-Key`.
+- **Validación de estilo:** Checkstyle integrado en Maven y ejecutado en la fase `validate`.
+
+---
 
 ## 🛠️ Stack tecnológico
 
-| Componente | Tecnología | Versión / detalle |
-| :--- | :--- | :--- |
-| **Lenguaje** | Java | 17 |
-| **Framework** | Spring Boot | 2.5.4 |
-| **Capa web** | Spring Web / MVC | `spring-boot-starter-web` |
-| **Persistencia** | Spring Data JPA / Hibernate | `spring-boot-starter-data-jpa` |
-| **Base de datos** | PostgreSQL | JDBC, base de datos `demo` |
-| **Exposición de repositorios** | Spring Data REST | `spring-boot-starter-data-rest` |
-| **Documentación API** | SpringFox Swagger | 3.0.0 |
-| **Caché** | Spring Cache | `ConcurrentMapCacheManager` |
-| **Código auxiliar** | Lombok | 1.18.34 |
-| **Mapeo** | MapStruct | 1.4.2.Final |
-| **Estilo de código** | Maven Checkstyle Plugin | 3.1.2 con Checkstyle 8.42 |
-| **Contenedores** | Docker | Imagen basada en OpenJDK 17 |
+| Componente | Tecnología |
+| :--- | :--- |
+| Lenguaje | Java 21 |
+| Framework HTTP | Spring WebFlux |
+| Runtime reactivo | Project Reactor |
+| Base de datos | PostgreSQL 14+ |
+| Acceso a datos | Spring Data R2DBC |
+| Build | Maven |
+| Calidad de código | Checkstyle 8.42 |
+| Documentación API | Springdoc OpenAPI 3.2.0 |
+
+---
 
 ## 📂 Arquitectura del proyecto
 
-El proyecto organiza el código en capas: el controlador delega las solicitudes al servicio; el servicio contiene las operaciones de negocio y utiliza el repositorio JPA para acceder a las entidades.
-
 ```text
-Java-SpringBoot-JPA/
-├── .agents/skills/               # Guías especializadas para agentes
-├── .github/
-│   ├── command/                  # Scripts auxiliares
-│   └── workflows/                # Workflow para publicar la imagen Docker
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/spring/
-│   │   │   ├── config/           # Configuración de caché y Swagger
-│   │   │   ├── domain/           # Entidad JPA Order
-│   │   │   ├── repository/       # Repositorio Spring Data JPA
-│   │   │   ├── service/          # Interfaz e implementación del servicio
-│   │   │   ├── web/              # Controladores MVC y REST
-│   │   │   └── DemoApplication.java
-│   │   └── resources/
-│   │       ├── application.yml   # Configuración del servidor y PostgreSQL
-│   │       └── import.sql        # Datos iniciales de órdenes
-│   └── test/                     # Código de pruebas
-├── AGENTS.md                     # Guía del proyecto para agentes y desarrolladores
-├── checkstyle.xml                # Reglas de Checkstyle
-├── Dockerfile                    # Imagen de la aplicación
-└── pom.xml                       # Dependencias y configuración Maven
+Java-SpringBoot-WebFlux/
+├── pom.xml
+├── README.md
+├── checkstyle.xml
+└── src/main/
+    ├── java/com/example/spring/
+    │   ├── config/       # R2DBC, autenticación y Swagger
+    │   ├── domain/       # Entidades y DTOs de tareas, productos y órdenes
+    │   ├── repository/   # Repositorios ReactiveCrudRepository
+    │   ├── service/      # Lógica de negocio reactiva
+    │   └── web/          # Controladores REST WebFlux
+    └── resources/
+        ├── application.yml
+        ├── schema.sql
+        └── data.sql
 ```
 
-## 📡 Endpoint REST
+---
 
-El controlador de órdenes expone el siguiente endpoint bajo `/api/v1`:
+## 📡 Endpoints
 
-| Método | Ruta | Descripción |
-| :--- | :--- | :--- |
-| `GET` | `/api/v1/order` | Obtiene la lista de órdenes |
+El servidor usa el puerto definido por `PORT` (por defecto, `3000`). Las rutas CRUD están bajo `/api/v1` y requieren `X-API-Key`. `GET /` es público y responde `Server is alive`.
 
-La ruta raíz `/` redirige a `/api/v1/order`. El servicio contiene también operaciones para buscar, guardar, editar y eliminar órdenes; esas operaciones no están expuestas como rutas en el controlador REST actual.
+| Recurso | Método | Ruta | Descripción |
+| :--- | :--- | :--- | :--- |
+| Tareas | `GET` | `/api/v1/task` | Listar tareas |
+| Tareas | `GET` | `/api/v1/task/{id}` | Obtener una tarea |
+| Tareas | `POST` | `/api/v1/task` | Crear una tarea |
+| Tareas | `PUT` | `/api/v1/task` | Actualizar una tarea |
+| Tareas | `DELETE` | `/api/v1/task/{id}` | Eliminar una tarea |
+| Productos | `GET` | `/api/v1/product` | Listar productos |
+| Productos | `GET` | `/api/v1/product/{id}` | Obtener un producto |
+| Productos | `POST` | `/api/v1/product` | Crear un producto |
+| Productos | `PUT` | `/api/v1/product` | Actualizar un producto |
+| Productos | `DELETE` | `/api/v1/product/{id}` | Eliminar un producto |
+| Órdenes | `GET` | `/api/v1/order` | Listar órdenes |
+| Órdenes | `GET` | `/api/v1/order/{id}` | Obtener una orden |
+| Órdenes | `POST` | `/api/v1/order` | Crear una orden |
+| Órdenes | `PUT` | `/api/v1/order/{id}` | Actualizar una orden |
+| Órdenes | `DELETE` | `/api/v1/order/{id}` | Eliminar una orden |
+
+Las búsquedas, actualizaciones y eliminaciones de registros inexistentes responden `404 Not Found`. Los datos de entrada no válidos responden `400 Bad Request`; las llamadas sin API key válida responden `401 Unauthorized`; los errores no gestionados, incluidos los de base de datos, responden `500 Internal Server Error`.
+
+### Ejemplos de cuerpos JSON
+
+Crear una tarea:
+
+```json
+{
+  "name": "Revisar el proyecto",
+  "done": false
+}
+```
+
+Actualizar una tarea con `PUT /api/v1/task`:
+
+```json
+{
+  "taskId": "b92c8a47-07be-4c62-9f22-278b8293e415",
+  "name": "Revisar el proyecto",
+  "done": true
+}
+```
+
+Crear un producto:
+
+```json
+{
+  "name": "Teclado",
+  "price": 49.99,
+  "stock": 12
+}
+```
+
+Actualizar un producto con `PUT /api/v1/product`:
+
+```json
+{
+  "productId": "c5eebff4-b83e-4e16-b9f0-d8efeb0f0641",
+  "name": "Teclado",
+  "price": 49.99,
+  "stock": 12
+}
+```
+
+Crear una orden:
+
+```json
+{
+  "name": "Compra de oficina",
+  "amount": 149.97,
+  "discount": 10.00
+}
+```
+
+Para actualizar una orden, envía `orderId`, `name`, `amount` y `discount` en el cuerpo de `PUT /api/v1/order/{id}`. El `orderId` del cuerpo debe coincidir con el UUID de la ruta.
+
+---
 
 ## ⚙️ Inicio rápido
 
-### Requisitos previos
+### Requisitos
 
-- JDK 17
-- Maven 3.6 o superior
-- Docker, para ejecutar PostgreSQL
+- JDK 21.
+- Maven.
+- Docker, o una instancia local de PostgreSQL 14 o superior.
 
 ### 1. Iniciar PostgreSQL
 
-La configuración predeterminada utiliza la base de datos `demo`, el usuario `postgres` y la contraseña `postgres`:
-
 ```bash
-docker run -d -p 5432:5432 \
-  --name postgresql \
-  -e POSTGRES_DB=demo \
-  -e POSTGRES_USER=postgres \
+docker run --name spring-webflux-postgres \
   -e POSTGRES_PASSWORD=postgres \
-  postgres:14
+  -e POSTGRES_DB=example \
+  -p 5432:5432 \
+  -d postgres:14
 ```
 
-### 2. Revisar el estilo y compilar
+La aplicación ejecuta `schema.sql` y `data.sql` al iniciar. El usuario de la base de datos necesita permisos para crear tablas y habilitar la extensión PostgreSQL `uuid-ossp`. Los datos de ejemplo se insertan sin borrar registros existentes.
+
+### 2. Configurar variables de entorno
+
+La aplicación importa automáticamente el archivo `.env` desde la raíz del proyecto. Copia el ejemplo y genera una clave aleatoria:
+
+```bash
+cp .env.example .env
+sed -i "s/replace_with_generated_key/$(openssl rand -hex 32)/" .env
+```
+
+También puedes editar `.env` manualmente. `API_KEY` es obligatoria y la aplicación no inicia si falta o está vacía. El archivo `.env` está excluido de Git; no compartas su contenido. Para producción, configura las variables en el entorno de ejecución y usa HTTPS.
+
+### 3. Checkstyle, compilación e instalación
 
 ```bash
 mvn checkstyle:check
-mvn clean compile
+mvn install
 ```
 
-### 3. Ejecutar la aplicación
+Checkstyle también se ejecuta automáticamente durante `mvn install`. Surefire está configurado para omitir la ejecución de pruebas en este proyecto.
+
+### 4. Ejecutar la aplicación
 
 ```bash
 mvn spring-boot:run
 ```
 
-La aplicación inicia en `http://localhost:8080`. Para generar el JAR que utiliza el Dockerfile:
+Ejecuta `mvn spring-boot:run` desde la raíz del proyecto para verificar el arranque de la aplicación con Maven de forma simple. Spring Boot cargará automáticamente la configuración del archivo `.env`. La API estará disponible en `http://localhost:3000` (o en el puerto indicado por `PORT`).
+
+---
+
+## 🧪 Prueba rápida
 
 ```bash
-mvn clean package
+curl http://localhost:3000/api/v1/task \
+  -H "X-API-Key: $API_KEY"
 ```
 
-> **Nota:** `application.yml` configura Hibernate con `ddl-auto: create-drop`. Al iniciar, el esquema se crea y se elimina al cerrar la aplicación; no uses esta configuración para conservar datos en un entorno de producción.
+Crear una tarea:
+
+```bash
+curl -X POST http://localhost:3000/api/v1/task \
+  -H 'Content-Type: application/json' \
+  -H "X-API-Key: $API_KEY" \
+  -d '{"name":"Primera tarea","done":false}'
+```
+
+---
 
 ## 📖 Swagger UI
 
-Con la aplicación en ejecución, la documentación interactiva está disponible en:
+La interfaz Swagger UI está disponible en:
 
 ```text
-http://localhost:8080/swagger-ui/
+http://localhost:3000/swagger-ui.html
 ```
+
+Solo las rutas `/api/v1/*` requieren la API key; la raíz y la documentación Swagger son públicas.

@@ -76,9 +76,9 @@ public final class OrderController {
     @DeleteMapping("/order/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable final UUID id) {
         return this.orderService.delete(id)
-            .filter((e) -> e == true)
-            .map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.notFound().build());
+                .filter(Boolean::booleanValue)
+                .map(e -> ResponseEntity.noContent().<Boolean>build())
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     /**

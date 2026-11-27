@@ -1,26 +1,21 @@
 package com.example.spring.domain.order;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.UUID;
+import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
-import lombok.Data;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Representa la entidad de dominio para las órdenes de compra.
  */
 @Data
 @Entity
-@Table(name = "order", schema = "public")
+@Table(name = "\"order\"", schema = "public")
 public final class Order {
 
     /**
@@ -32,7 +27,6 @@ public final class Order {
      * Variable con el id de la orden.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID orderId;
 
     /**
@@ -56,14 +50,12 @@ public final class Order {
     /**
      * Variable con la fecha de creacion.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, columnDefinition = "timestamp default now()")
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
     /**
      * Variable con la fecha de actualización.
      */
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, columnDefinition = "timestamp default now()")
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 }

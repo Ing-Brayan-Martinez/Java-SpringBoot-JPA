@@ -12,7 +12,8 @@ public final class IndexController {
      */
     @RequestMapping("/")
     public String index() {
-        return "redirect:/api/v1/order";
+        //return "redirect:/api/v1/order";
+        return "Server is alive";
     }
 
 }
